@@ -22,6 +22,9 @@ Single self-contained `index.html` — no build step, no dependencies, works off
 - **A nudge when you want one** — the ✦ button runs the engine for you and flashes a
   reasonable move.
 - **Take a move back** with ↺, which rewinds past the bot's reply to your own turn.
+- **Keep a game you liked.** When a game ends, *Copy game (PGN)* puts the whole game on
+  your clipboard in standard PGN — ready to paste into any analysis board. The moves are
+  also shown in a selectable box, so it still works where the clipboard is locked down.
 - Soft move sounds and haptics, switchable in Settings.
 - **Eight board colours** to choose from in Settings.
 - **Four game modes**, picked on the home screen before you start:
