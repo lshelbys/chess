@@ -53,7 +53,7 @@ Single self-contained `index.html` — no build step, no dependencies, works off
 Accounts are **off by default** and entirely optional — the app plays fully offline without
 one. Turn them on by giving it a Firebase project. Once configured, the **Friends** tab
 (Play · Friends · You · Settings) lets you create an account, sign in, get a shareable
-**friend code**, send/accept friend requests, and every finished game is saved to your
+**username**, send/accept friend requests, and every finished game is saved to your
 account (visible under *You*). Sign-in uses email + password; the app talks to Firebase over
 its REST API, so `index.html` stays a single self-contained file with no SDK.
 
