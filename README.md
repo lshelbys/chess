@@ -85,6 +85,21 @@ works as before.
 Signed in, the **You** tab has an **Edit account** screen to change your username (it re-claims
 the new name and frees the old one), your email or your password, and to delete the account.
 
+### Email confirmation
+
+Creating an account does **not** sign you in straight away: the app sends a Firebase
+confirmation **link** to the email and shows a "Confirm your email" sheet. Open the link, tap
+*I've confirmed — continue*, and you're in. There's a *Resend email* option, and signing in to
+an unverified account routes back to the same confirmation step (and re-sends the link). The
+username and profile are reserved at sign-up, but the session is only saved once the email is
+confirmed.
+
+This uses Firebase's built-in verification, which is a **link, not a numeric code** — a static,
+serverless site can't send/verify a one-time code without a backend. If you specifically want a
+6-digit code typed into the app, that needs a small Cloud Function plus an email provider
+(SendGrid/etc.); ask and it can be added. You can customise the email's wording and sender under
+**Authentication → Templates** in the Firebase console.
+
 ### Optional: reCAPTCHA on sign-up
 
 Sign-up can require a reCAPTCHA v2 ("I'm not a robot") checkbox. It is **off by default**. To
