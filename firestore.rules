@@ -22,14 +22,16 @@ service cloud.firestore {
     match /handles/{code} {
       allow read:   if true;
       allow create: if signedIn() && request.resource.data.uid == me();
-      allow update, delete: if false;
+      allow update: if false;
+      // You may release a code you own (changing username, or deleting your account).
+      allow delete: if signedIn() && resource.data.uid == me();
     }
 
     match /users/{uid} {
       // Your own profile is private to you.
       allow read:          if signedIn() && uid == me();
       allow create, update:if signedIn() && uid == me();
-      allow delete:        if false;
+      allow delete:        if signedIn() && uid == me();
 
       // Your saved games — only you.
       match /games/{gameId} {
