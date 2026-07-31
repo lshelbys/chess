@@ -80,6 +80,23 @@ Firebase project.
 Until you do step 7 the Friends tab simply invites you to add a config, and everything else
 works as before.
 
+### Managing an account
+
+Signed in, the **You** tab has an **Edit account** screen to change your username (it re-claims
+the new name and frees the old one), your email or your password, and to delete the account.
+
+### Optional: reCAPTCHA on sign-up
+
+Sign-up can require a reCAPTCHA v2 ("I'm not a robot") checkbox. It is **off by default**. To
+enable it, create a **reCAPTCHA v2 Checkbox** site at
+[google.com/recaptcha/admin](https://www.google.com/recaptcha/admin), add your site's domain,
+copy the **site key**, and set `RECAPTCHA_SITE_KEY` in `index.html` to it. With a key present,
+the checkbox appears on the Create-account form and must be solved before an account is made.
+
+This is a front-end gate that deters casual bots; because the app has no server it cannot verify
+the token server-side. For hard, verified bot protection, enable Firebase App Check / Identity
+Platform reCAPTCHA (which needs the Firebase SDK) — ask and it can be wired up.
+
 ## Host on GitHub Pages
 
 1. Create a new repository on GitHub.
