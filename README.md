@@ -13,6 +13,8 @@ Single self-contained `index.html` — no build step, no dependencies, works off
   stalemate, threefold repetition, the fifty-move rule and insufficient material.
 - **Play either colour.** Pick White, Black or Either on the home screen; the board flips
   and the bot opens when you take black.
+- **Move by dragging or tapping.** Drag a piece to its square, or tap the piece and then
+  tap the destination — whichever you prefer. Legal squares light up either way.
 - **Pick a piece when a pawn promotes** rather than always getting a queen.
 - **Your game is saved.** Close the tab mid-game and the home screen offers to resume it.
   Settings, board colour and your record persist too — all in `localStorage`, nothing leaves
