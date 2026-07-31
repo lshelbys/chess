@@ -84,6 +84,9 @@ works as before.
 
 Signed in, the **You** tab has an **Edit account** screen to change your username (it re-claims
 the new name and frees the old one), your email or your password, and to delete the account.
+Changing your email sends a confirmation **link to the new address** (Firebase's
+verify-and-change flow); the email only switches once you open that link, and you may need to
+sign in again with the new address afterwards.
 
 ### Email confirmation
 
