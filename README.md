@@ -48,6 +48,38 @@ Single self-contained `index.html` — no build step, no dependencies, works off
   falls back to the on-device engine automatically and says so under the bot's name — a turn
   never stalls waiting on the network.
 
+## Accounts & friends (optional, powered by Firebase)
+
+Accounts are **off by default** and entirely optional — the app plays fully offline without
+one. Turn them on by giving it a Firebase project. Once configured, the **Friends** tab
+(Play · Friends · You · Settings) lets you create an account, sign in, get a shareable
+**friend code**, send/accept friend requests, and every finished game is saved to your
+account (visible under *You*). Sign-in uses email + password; the app talks to Firebase over
+its REST API, so `index.html` stays a single self-contained file with no SDK.
+
+**Note on privacy:** local play still leaves nothing on the device's network. Account
+features (sign-in, saved games, friends) obviously use the network and store data in your
+Firebase project.
+
+### Set it up
+
+1. **console.firebase.google.com → Add project.** The free *Spark* plan is plenty.
+2. **Add a Web app** (`</>`), register it, and note the `apiKey` and `projectId` from the
+   shown `firebaseConfig`. These are *not* secrets — they are meant to ship in the browser;
+   security comes from the rules below.
+3. **Build → Authentication → Get started → Sign-in method → enable Email/Password.**
+4. **Build → Firestore Database → Create database** (production mode), pick a region.
+5. **Firestore → Rules**, paste the contents of [`firestore.rules`](firestore.rules), Publish.
+6. **Authentication → Settings → Authorized domains**, add your site's host
+   (e.g. `yourname.github.io`).
+7. **Turn it on in the app:** open `index.html` in a text editor and replace the two
+   placeholders `YOUR_FIREBASE_API_KEY` and `YOUR_FIREBASE_PROJECT_ID` with your values, then
+   save. (These values contain no special characters, so a plain find-and-replace is safe.)
+   Reload the site and the Friends tab is live.
+
+Until you do step 7 the Friends tab simply invites you to add a config, and everything else
+works as before.
+
 ## Host on GitHub Pages
 
 1. Create a new repository on GitHub.

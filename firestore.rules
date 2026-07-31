@@ -1,0 +1,60 @@
+rules_version = '2';
+
+// Security rules for Chess Companion accounts.
+// Paste these into Firebase console → Firestore Database → Rules → Publish.
+//
+// Data model:
+//   handles/{code}                     -> { uid, handle }         (friend-code directory)
+//   users/{uid}                        -> { handle, handleLower, email, createdAt }
+//   users/{uid}/games/{gameId}         -> { result, plies, botId, mode, pgn, at }
+//   users/{uid}/friendRequests/{from}  -> { fromUid, fromHandle, at }
+//   users/{uid}/friends/{friendUid}    -> { handle, uid, at }
+
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function me()       { return request.auth.uid; }
+
+    // Friend-code directory. Readable by anyone so a new player can check a code
+    // and look up who to friend; you may only claim a free code that points to you,
+    // and codes can never be edited or stolen once taken.
+    match /handles/{code} {
+      allow read:   if true;
+      allow create: if signedIn() && request.resource.data.uid == me();
+      allow update, delete: if false;
+    }
+
+    match /users/{uid} {
+      // Your own profile is private to you.
+      allow read:          if signedIn() && uid == me();
+      allow create, update:if signedIn() && uid == me();
+      allow delete:        if false;
+
+      // Your saved games — only you.
+      match /games/{gameId} {
+        allow read, write: if signedIn() && uid == me();
+      }
+
+      // Incoming friend requests: the sender writes a doc keyed by THEIR uid into
+      // your inbox; you (the owner) read and delete it when you accept or ignore.
+      match /friendRequests/{fromUid} {
+        allow read, delete: if signedIn() && uid == me();
+        allow create:       if signedIn() && fromUid == me()
+                            && request.resource.data.fromUid == me();
+      }
+
+      // Friend links. You manage your own list. A new friend may add the reciprocal
+      // link into your list only while you still hold a pending request from them
+      // (i.e. you just accepted on your side).
+      match /friends/{friendUid} {
+        allow read: if signedIn() && uid == me();
+        allow write: if signedIn() && (
+          uid == me() ||
+          ( friendUid == me() &&
+            exists(/databases/$(db)/documents/users/$(friendUid)/friendRequests/$(uid)) )
+        );
+      }
+    }
+  }
+}
